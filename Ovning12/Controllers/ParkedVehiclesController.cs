@@ -58,6 +58,7 @@ namespace Ovning12.Controllers
         {
             if (ModelState.IsValid)
             {
+                parkedVehicle.ArrivalDateTime= DateTimeOffset.Now;
                 _context.Add(parkedVehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

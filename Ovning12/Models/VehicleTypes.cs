@@ -1,6 +1,6 @@
 ﻿namespace Ovning12.Models
 {
-    public enum VehicleType
+    public enum VehicleTypes
     {
         Car,
         Bus,

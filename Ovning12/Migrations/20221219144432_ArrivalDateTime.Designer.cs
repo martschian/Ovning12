@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ovning12.Data;
 
@@ -11,9 +12,10 @@ using Ovning12.Data;
 namespace Ovning12.Migrations
 {
     [DbContext(typeof(Ovning12Context))]
-    partial class Ovning12ContextModelSnapshot : ModelSnapshot
+    [Migration("20221219144432_ArrivalDateTime")]
+    partial class ArrivalDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
