@@ -9,7 +9,8 @@ namespace Ovning12.ViewModels
         public VehicleTypes VehicleType { get; set; }
         public string RegistrationNumber { get; set; }
         public string VehicleMakeAndModel { get; set; }
-        [DataType(DataType.Duration)]
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = @"{0:hh\:mm}")]
         public TimeSpan TimeParked { get; set; }
 
     }

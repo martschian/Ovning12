@@ -107,7 +107,7 @@ namespace Ovning12.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ParkedVehicleId,VehicleType,Model,Make,RegistrationNumber")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("ParkedVehicleId,VehicleType,Model,Make,Color,NumberOfWheels,RegistrationNumber")] ParkedVehicle parkedVehicle)
         {
             System.Diagnostics.Debug.WriteLine(parkedVehicle.ArrivalDateTime.ToString());
             if (id != parkedVehicle.ParkedVehicleId)
