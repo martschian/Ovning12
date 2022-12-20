@@ -8,6 +8,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Ovning12.Data;
 using Ovning12.Models;
+using Ovning12.ViewModels;
 
 namespace Ovning12.Controllers
 {
@@ -23,7 +24,17 @@ namespace Ovning12.Controllers
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-              return View(await _context.ParkedVehicle.ToListAsync());
+            var model = await _context.ParkedVehicle.Select(pv => new ParkedVehiclesIndexViewModel
+            {
+                ParkedVehicleId = pv.ParkedVehicleId,
+                VehicleType = pv.VehicleType,
+                VehicleMakeAndModel = $"{pv.Make} {pv.Model}",
+                RegistrationNumber = pv.RegistrationNumber,
+                TimeParked = DateTimeOffset.Now - pv.ArrivalDateTime,
+
+            }).ToListAsync();
+            
+            return View(model);
         }
 
         // GET: ParkedVehicles/Details/5
@@ -55,13 +66,13 @@ namespace Ovning12.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ParkedVehicleId,VehicleType,Model,Make,RegistrationNumber")] ParkedVehicle parkedVehicle)
+        public async Task<IActionResult> Create([Bind("ParkedVehicleId,VehicleType,Model,Make,Color,NumberOfWheels,RegistrationNumber")] ParkedVehicle parkedVehicle)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(parkedVehicle);
                 parkedVehicle.ArrivalDateTime = DateTimeOffset.Now;
-                
+
                 try
                 {
                     await _context.SaveChangesAsync();
@@ -165,14 +176,14 @@ namespace Ovning12.Controllers
             {
                 _context.ParkedVehicle.Remove(parkedVehicle);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ParkedVehicleExists(int id)
         {
-          return _context.ParkedVehicle.Any(e => e.ParkedVehicleId == id);
+            return _context.ParkedVehicle.Any(e => e.ParkedVehicleId == id);
         }
     }
 }

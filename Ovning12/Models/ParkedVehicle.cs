@@ -31,7 +31,6 @@ namespace Ovning12.Models
 
         [Required]
         [StringLength(10, MinimumLength = 3)]
-        
         [Display(Name = "Registeringsnummer")]
         public string RegistrationNumber { get; set; }
 

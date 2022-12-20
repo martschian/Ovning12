@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Ovning12.Models.ParkedVehicle>
+﻿@using Ovning12.ViewModels;
+@model IEnumerable<ParkedVehiclesIndexViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,16 +17,16 @@
                 @Html.DisplayNameFor(model => model.VehicleType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Model)
+                @Html.DisplayNameFor(model => model.VehicleMakeAndModel)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Make)
             </th>
-            <th>
+            *@<th>
                 @Html.DisplayNameFor(model => model.RegistrationNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ArrivalDateTime)
+                @Html.DisplayNameFor(model => model.TimeParked)
             </th>
             <th></th>
         </tr>
@@ -37,16 +38,16 @@
                 @Html.DisplayFor(modelItem => item.VehicleType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Model)
+                    @Html.DisplayFor(modelItem => item.VehicleMakeAndModel)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Make)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.RegistrationNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ArrivalDateTime)
+                @Html.DisplayFor(modelItem => item.TimeParked)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ParkedVehicleId">Edit</a> |
