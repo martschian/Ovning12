@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ovning12.Data;
 
@@ -11,9 +12,10 @@ using Ovning12.Data;
 namespace Ovning12.Migrations
 {
     [DbContext(typeof(Ovning12Context))]
-    partial class Ovning12ContextModelSnapshot : ModelSnapshot
+    [Migration("20221220150938_UniqueRegistrationConstraint")]
+    partial class UniqueRegistrationConstraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,11 +35,6 @@ namespace Ovning12.Migrations
                     b.Property<DateTimeOffset>("ArrivalDateTime")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.Property<string>("Make")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -47,9 +44,6 @@ namespace Ovning12.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("NumberOfWheels")
-                        .HasColumnType("int");
 
                     b.Property<string>("RegistrationNumber")
                         .IsRequired()

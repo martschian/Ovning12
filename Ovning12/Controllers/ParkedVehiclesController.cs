@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Ovning12.Data;
 using Ovning12.Models;
@@ -58,10 +59,18 @@ namespace Ovning12.Controllers
         {
             if (ModelState.IsValid)
             {
-                parkedVehicle.ArrivalDateTime = DateTimeOffset.Now;
                 _context.Add(parkedVehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                parkedVehicle.ArrivalDateTime = DateTimeOffset.Now;
+                
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("RegistrationNumber", "Must be unique!");
+                }
             }
             return View(parkedVehicle);
         }
@@ -102,6 +111,7 @@ namespace Ovning12.Controllers
                     _context.Update(parkedVehicle);
                     _context.Entry(parkedVehicle).Property(x => x.ArrivalDateTime).IsModified = false;
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -114,7 +124,11 @@ namespace Ovning12.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("RegistrationNumber", "Must be unique!");
+                }
+                // return RedirectToAction(nameof(Index));
             }
             return View(parkedVehicle);
         }
