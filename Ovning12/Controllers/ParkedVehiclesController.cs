@@ -58,7 +58,7 @@ namespace Ovning12.Controllers
         {
             if (ModelState.IsValid)
             {
-                parkedVehicle.ArrivalDateTime= DateTimeOffset.Now;
+                parkedVehicle.ArrivalDateTime = DateTimeOffset.Now;
                 _context.Add(parkedVehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -89,6 +89,7 @@ namespace Ovning12.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ParkedVehicleId,VehicleType,Model,Make,RegistrationNumber")] ParkedVehicle parkedVehicle)
         {
+            System.Diagnostics.Debug.WriteLine(parkedVehicle.ArrivalDateTime.ToString());
             if (id != parkedVehicle.ParkedVehicleId)
             {
                 return NotFound();
@@ -99,6 +100,7 @@ namespace Ovning12.Controllers
                 try
                 {
                     _context.Update(parkedVehicle);
+                    _context.Entry(parkedVehicle).Property(x => x.ArrivalDateTime).IsModified = false;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
