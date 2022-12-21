@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ovning12.Data;
 using Ovning12.Models;
@@ -21,6 +15,23 @@ namespace Ovning12.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> Receipt(int id)
+        {
+            var currentTime = DateTimeOffset.Now;
+            var model = _context.ParkedVehicle.Where(pv => pv.ParkedVehicleId == id);
+            var vm = model.Select(pv => new ReceiptViewModel
+            {
+                ParkedVehicleId = pv.ParkedVehicleId,
+                VehicleType = pv.VehicleType,
+                RegistrationNumber = pv.RegistrationNumber,
+                VehicleMakeAndModel = $"{pv.Make} {pv.Model}",
+                ArrivalDateTime = pv.ArrivalDateTime,
+                CheckoutDateTime = currentTime,
+                TimeParked = currentTime - pv.ArrivalDateTime,
+                Price = 12
+            });
+            return View(await vm.FirstAsync());
+        }
         public async Task<IActionResult> Filter(string registrationNumber, int? vehicleType)
         {
 
@@ -51,7 +62,7 @@ namespace Ovning12.Controllers
         public async Task<IActionResult> Index()
         {
             var model = CreateIndexViewModel(_context.ParkedVehicle);
-            
+
             return View(await model.ToListAsync());
         }
 

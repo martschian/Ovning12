@@ -1,0 +1,64 @@
+﻿@model ReceiptViewModel
+@{
+    ViewData["Title"] = "Receipt";
+}
+
+
+
+<div>
+    <h4>Kvitto</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VehicleType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VehicleType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VehicleMakeAndModel)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VehicleMakeAndModel)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RegistrationNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RegistrationNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ArrivalDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ArrivalDateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CheckoutDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CheckoutDateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TimeParked)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TimeParked, "TimeSpanTotal")
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <form asp-action="Delete" asp-route-id="@Model.ParkedVehicleId">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
+
+
