@@ -28,8 +28,15 @@ namespace Ovning12.Controllers
                                     _context.ParkedVehicle :
                                     _context.ParkedVehicle.Where(pv => pv.RegistrationNumber.Contains(registrationNumber));
             model = vehicleType is null ? model : model.Where(pv => (int)pv.VehicleType == vehicleType);
-            
-            var vm = model.Select(pv => new ParkedVehiclesIndexViewModel
+
+            IQueryable<ParkedVehiclesIndexViewModel> vm = CreateIndexViewModel(model);
+
+            return View(nameof(Index), await vm.ToListAsync());
+        }
+
+        private IQueryable<ParkedVehiclesIndexViewModel> CreateIndexViewModel(IQueryable<ParkedVehicle> model)
+        {
+            return model.Select(pv => new ParkedVehiclesIndexViewModel
             {
                 ParkedVehicleId = pv.ParkedVehicleId,
                 VehicleType = pv.VehicleType,
@@ -38,22 +45,12 @@ namespace Ovning12.Controllers
                 TimeParked = DateTimeOffset.Now - pv.ArrivalDateTime,
 
             });
-
-            return View(nameof(Index), await vm.ToListAsync());
         }
 
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-            var model = _context.ParkedVehicle.Select(pv => new ParkedVehiclesIndexViewModel
-            {
-                ParkedVehicleId = pv.ParkedVehicleId,
-                VehicleType = pv.VehicleType,
-                VehicleMakeAndModel = $"{pv.Make} {pv.Model}",
-                RegistrationNumber = pv.RegistrationNumber,
-                TimeParked = DateTimeOffset.Now - pv.ArrivalDateTime,
-
-            });
+            var model = CreateIndexViewModel(_context.ParkedVehicle);
             
             return View(await model.ToListAsync());
         }
