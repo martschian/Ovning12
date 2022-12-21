@@ -15,25 +15,29 @@ namespace Ovning12.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Receipt(int id)
+        public async Task<IActionResult> Receipt(int? id)
         {
-            var currentTime = DateTimeOffset.Now;
-            var model = _context.ParkedVehicle.Where(pv => pv.ParkedVehicleId == id);
-            var vm = model.Select(pv => new ReceiptViewModel
+            if (id == null || _context.ParkedVehicle == null || !ParkedVehicleExists((int)id))
             {
-                ParkedVehicleId = pv.ParkedVehicleId,
-                VehicleType = pv.VehicleType,
-                RegistrationNumber = pv.RegistrationNumber,
-                VehicleMakeAndModel = $"{pv.Make} {pv.Model}",
-                ArrivalDateTime = pv.ArrivalDateTime,
-                CheckoutDateTime = currentTime,
-                TimeParked = currentTime - pv.ArrivalDateTime,
-            });
+                return NotFound();
+            }
+
+            var currentTime = DateTimeOffset.Now;
+            var vm = _context.ParkedVehicle.Where(pv => pv.ParkedVehicleId == id)
+                                           .Select(pv => new ReceiptViewModel
+                                           {
+                                               ParkedVehicleId = pv.ParkedVehicleId,
+                                               VehicleType = pv.VehicleType,
+                                               RegistrationNumber = pv.RegistrationNumber,
+                                               VehicleMakeAndModel = $"{pv.Make} {pv.Model}",
+                                               ArrivalDateTime = pv.ArrivalDateTime,
+                                               CheckoutDateTime = currentTime,
+                                               TimeParked = currentTime - pv.ArrivalDateTime,
+                                           });
             return View(await vm.FirstAsync());
         }
         public async Task<IActionResult> Filter(string registrationNumber, int? vehicleType)
         {
-
             var model = string.IsNullOrWhiteSpace(registrationNumber) ?
                                     _context.ParkedVehicle :
                                     _context.ParkedVehicle.Where(pv => pv.RegistrationNumber.Contains(registrationNumber));
@@ -60,9 +64,9 @@ namespace Ovning12.Controllers
         // GET: ParkedVehicles
         public async Task<IActionResult> Index()
         {
-            var model = CreateIndexViewModel(_context.ParkedVehicle);
+            var vm = CreateIndexViewModel(_context.ParkedVehicle);
 
-            return View(await model.ToListAsync());
+            return View(await vm.ToListAsync());
         }
 
         // GET: ParkedVehicles/Details/5
@@ -104,9 +108,11 @@ namespace Ovning12.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
-                    TempData["FlashMessage"] = new Dictionary<string, string>{
-                { "msg", "Vehicle checked in" },
-                { "cssClass","alert-success"} };
+                    TempData["FlashMessage"] = new Dictionary<string, string>
+                    {
+                        { "msg", "Vehicle checked in" },
+                        { "cssClass","alert-success"}
+                    };
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception)
@@ -152,9 +158,11 @@ namespace Ovning12.Controllers
                     _context.Update(parkedVehicle);
                     _context.Entry(parkedVehicle).Property(x => x.ArrivalDateTime).IsModified = false;
                     await _context.SaveChangesAsync();
-                    TempData["FlashMessage"] = new Dictionary<string, string>{
-                { "msg", "Vehicle details edited" },
-                { "cssClass","alert-success"} };
+                    TempData["FlashMessage"] = new Dictionary<string, string>
+                    {
+                        { "msg", "Vehicle details edited" },
+                        { "cssClass","alert-success"}
+                    };
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -211,9 +219,12 @@ namespace Ovning12.Controllers
             }
 
             await _context.SaveChangesAsync();
-            TempData["FlashMessage"] = new Dictionary<string, string>{
+
+            TempData["FlashMessage"] = new Dictionary<string, string>
+            {
                 { "msg", "Vehicle checked out" },
-                { "cssClass","alert-success"} };
+                { "cssClass","alert-success"}
+            };
 
             return RedirectToAction(nameof(Index));
         }
