@@ -21,10 +21,15 @@ namespace Ovning12.Controllers
             _context = context;
         }
 
-        // GET: ParkedVehicles
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Filter(string registrationNumber, int? vehicleType)
         {
-            var model = await _context.ParkedVehicle.Select(pv => new ParkedVehiclesIndexViewModel
+
+            var model = string.IsNullOrWhiteSpace(registrationNumber) ?
+                                    _context.ParkedVehicle :
+                                    _context.ParkedVehicle.Where(pv => pv.RegistrationNumber.Contains(registrationNumber));
+            model = vehicleType is null ? model : model.Where(pv => (int)pv.VehicleType == vehicleType);
+            
+            var vm = model.Select(pv => new ParkedVehiclesIndexViewModel
             {
                 ParkedVehicleId = pv.ParkedVehicleId,
                 VehicleType = pv.VehicleType,
@@ -32,9 +37,25 @@ namespace Ovning12.Controllers
                 RegistrationNumber = pv.RegistrationNumber,
                 TimeParked = DateTimeOffset.Now - pv.ArrivalDateTime,
 
-            }).ToListAsync();
+            });
+
+            return View(nameof(Index), await vm.ToListAsync());
+        }
+
+        // GET: ParkedVehicles
+        public async Task<IActionResult> Index()
+        {
+            var model = _context.ParkedVehicle.Select(pv => new ParkedVehiclesIndexViewModel
+            {
+                ParkedVehicleId = pv.ParkedVehicleId,
+                VehicleType = pv.VehicleType,
+                VehicleMakeAndModel = $"{pv.Make} {pv.Model}",
+                RegistrationNumber = pv.RegistrationNumber,
+                TimeParked = DateTimeOffset.Now - pv.ArrivalDateTime,
+
+            });
             
-            return View(model);
+            return View(await model.ToListAsync());
         }
 
         // GET: ParkedVehicles/Details/5
