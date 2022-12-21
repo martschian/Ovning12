@@ -22,7 +22,6 @@ namespace Ovning12.Controllers
                 return NotFound();
             }
 
-            var currentTime = DateTimeOffset.Now;
             var vm = _context.ParkedVehicle.Where(pv => pv.ParkedVehicleId == id)
                                            .Select(pv => new ReceiptViewModel
                                            {
@@ -31,8 +30,7 @@ namespace Ovning12.Controllers
                                                RegistrationNumber = pv.RegistrationNumber,
                                                VehicleMakeAndModel = $"{pv.Make} {pv.Model}",
                                                ArrivalDateTime = pv.ArrivalDateTime,
-                                               CheckoutDateTime = currentTime,
-                                               TimeParked = currentTime - pv.ArrivalDateTime,
+                                               CheckoutDateTime = DateTimeOffset.Now,
                                            });
             return View(await vm.FirstAsync());
         }

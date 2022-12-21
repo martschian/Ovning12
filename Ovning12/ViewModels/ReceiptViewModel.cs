@@ -12,7 +12,7 @@ namespace Ovning12.ViewModels
         public string VehicleMakeAndModel { get; set; }
         public DateTimeOffset ArrivalDateTime { get; set; }
         public DateTimeOffset CheckoutDateTime { get; set; }
-        public TimeSpan TimeParked { get; set; }
+        public TimeSpan TimeParked => ArrivalDateTime - CheckoutDateTime;
 
         private decimal _price;
 
