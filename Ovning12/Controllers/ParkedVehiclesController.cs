@@ -108,7 +108,7 @@ namespace Ovning12.Controllers
                     await _context.SaveChangesAsync();
                     TempData["FlashMessage"] = new Dictionary<string, string>
                     {
-                        { "msg", "Vehicle checked in" },
+                        { "msg", $"Vehicle {parkedVehicle.RegistrationNumber} checked in" },
                         { "cssClass","alert-success"}
                     };
                     return RedirectToAction(nameof(Index));
@@ -158,7 +158,7 @@ namespace Ovning12.Controllers
                     await _context.SaveChangesAsync();
                     TempData["FlashMessage"] = new Dictionary<string, string>
                     {
-                        { "msg", "Vehicle details edited" },
+                        { "msg", $"Vehicle details for {parkedVehicle.RegistrationNumber} edited" },
                         { "cssClass","alert-success"}
                     };
                     return RedirectToAction(nameof(Index));
@@ -220,7 +220,7 @@ namespace Ovning12.Controllers
 
             TempData["FlashMessage"] = new Dictionary<string, string>
             {
-                { "msg", "Vehicle checked out" },
+                { "msg", $"Vehicle {parkedVehicle.RegistrationNumber} checked out" },
                 { "cssClass","alert-success"}
             };
 
