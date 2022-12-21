@@ -28,7 +28,6 @@ namespace Ovning12.Controllers
                 ArrivalDateTime = pv.ArrivalDateTime,
                 CheckoutDateTime = currentTime,
                 TimeParked = currentTime - pv.ArrivalDateTime,
-                Price = 12
             });
             return View(await vm.FirstAsync());
         }
