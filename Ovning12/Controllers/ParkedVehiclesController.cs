@@ -109,7 +109,6 @@ namespace Ovning12.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ParkedVehicleId,VehicleType,Model,Make,Color,NumberOfWheels,RegistrationNumber")] ParkedVehicle parkedVehicle)
         {
-            System.Diagnostics.Debug.WriteLine(parkedVehicle.ArrivalDateTime.ToString());
             if (id != parkedVehicle.ParkedVehicleId)
             {
                 return NotFound();

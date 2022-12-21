@@ -47,7 +47,8 @@
                 @Html.DisplayFor(modelItem => item.RegistrationNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TimeParked)
+                @Html.DisplayFor(modelItem => item.TimeParked, "TimeSpanTotal")
+                @*@item.TimeParked.TotalHours*@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ParkedVehicleId">Edit</a> |
