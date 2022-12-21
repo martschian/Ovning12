@@ -105,6 +105,9 @@ namespace Ovning12.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+                    TempData["FlashMessage"] = new Dictionary<string, string>{
+                { "msg", "Vehicle checked in" },
+                { "cssClass","alert-success"} };
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception)
@@ -150,6 +153,9 @@ namespace Ovning12.Controllers
                     _context.Update(parkedVehicle);
                     _context.Entry(parkedVehicle).Property(x => x.ArrivalDateTime).IsModified = false;
                     await _context.SaveChangesAsync();
+                    TempData["FlashMessage"] = new Dictionary<string, string>{
+                { "msg", "Vehicle details edited" },
+                { "cssClass","alert-success"} };
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -206,6 +212,10 @@ namespace Ovning12.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["FlashMessage"] = new Dictionary<string, string>{
+                { "msg", "Vehicle checked out" },
+                { "cssClass","alert-success"} };
+
             return RedirectToAction(nameof(Index));
         }
 
