@@ -17,25 +17,27 @@ namespace Ovning12.Services
         public async Task<StatisticsViewModel> GetCarageStatisticsAsync()
         {
             var vehicleTypeStats = new Dictionary<VehicleTypes, int>();
+            var parkedVehicles = await _context.ParkedVehicle.ToListAsync();
 
-            var vehicleGroups = await _context.ParkedVehicle.GroupBy(p => p.VehicleType).Select(p => new 
-            {
-                Model = p.Key,
-                Count = p.Count()
-            }).ToListAsync();
+            var vehicleGroups = parkedVehicles.GroupBy(x => x.VehicleType);
+
+            //var vehicleGroups = await _context.ParkedVehicle.GroupBy(p => p.VehicleType).Select(p => new 
+            //{
+            //    Model = p.Key,
+            //    Count = p.Count()
+            //}).ToListAsync();
 
             foreach (var vehicleGroup in vehicleGroups)
             {
-                vehicleTypeStats.Add(vehicleGroup.Model, vehicleGroup.Count);
+                vehicleTypeStats.Add(vehicleGroup.Key, vehicleGroup.Count());
             }
             
-            var numberOfWheels = _context.ParkedVehicle.Select(pv => pv.NumberOfWheels).SumAsync();
+            var numberOfWheels = parkedVehicles.Select(pv => pv.NumberOfWheels).Sum();
 
             decimal totalOwed=0;
             DateTimeOffset currentTime = DateTimeOffset.Now;
             
-            
-            foreach (var item in _context.ParkedVehicle)
+            foreach (var item in parkedVehicles)
             {
                 totalOwed += GetPriceForParkedDuration(item.ArrivalDateTime, currentTime);
             }
@@ -43,7 +45,7 @@ namespace Ovning12.Services
             return new StatisticsViewModel()
             {
                 MoneyOwedStat = totalOwed,
-                TotalNumberOfWheelsStat = await numberOfWheels,
+                TotalNumberOfWheelsStat = numberOfWheels,
                 VehicleTypesStat = vehicleTypeStats
             };
         }
