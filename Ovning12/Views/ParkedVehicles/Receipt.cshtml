@@ -1,9 +1,7 @@
 ﻿@model ReceiptViewModel
 @{
-    ViewData["Title"] = "Receipt";
+    ViewData["Title"] = "Kvitto";
 }
-
-
 
 <div>
     <h4>Kvitto</h4>
@@ -56,8 +54,8 @@
 </div>
 <div>
     <form asp-action="Delete" asp-route-id="@Model.ParkedVehicleId">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Checka ut" class="btn btn-danger" /> |
+        <a asp-action="Index">Tillbaka till översikten</a>
     </form>
 </div>
 
