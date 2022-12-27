@@ -13,6 +13,6 @@ namespace Ovning12.ViewModels
         public DateTimeOffset ArrivalDateTime { get; set; }
         public DateTimeOffset CheckoutDateTime { get; set; }
         public TimeSpan TimeParked => CheckoutDateTime - ArrivalDateTime;
-        public decimal Price => (decimal)Math.Floor(TimeParked.TotalHours) * 12 + 12;
+        public decimal Price { get; set; }
     }
 }

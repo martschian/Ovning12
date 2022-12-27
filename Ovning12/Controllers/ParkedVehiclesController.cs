@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ovning12.Data;
 using Ovning12.Models;
+using Ovning12.Services;
 using Ovning12.ViewModels;
 
 namespace Ovning12.Controllers
@@ -9,10 +10,18 @@ namespace Ovning12.Controllers
     public class ParkedVehiclesController : Controller
     {
         private readonly Ovning12Context _context;
+        private readonly IGarageHelpers _gh;
 
-        public ParkedVehiclesController(Ovning12Context context)
+        public ParkedVehiclesController(Ovning12Context context, IGarageHelpers gh)
         {
             _context = context;
+            _gh = gh;
+        }
+
+        public async Task<IActionResult> Statistics()
+        {
+            var model = await _gh.GetCarageStatisticsAsync();
+            return View(model);
         }
 
         public async Task<IActionResult> Receipt(int? id)
@@ -22,6 +31,7 @@ namespace Ovning12.Controllers
                 return NotFound();
             }
 
+            var currentTime = DateTimeOffset.Now;
             var vm = _context.ParkedVehicle.Where(pv => pv.ParkedVehicleId == id)
                                            .Select(pv => new ReceiptViewModel
                                            {
@@ -30,8 +40,9 @@ namespace Ovning12.Controllers
                                                RegistrationNumber = pv.RegistrationNumber,
                                                VehicleMakeAndModel = $"{pv.Make} {pv.Model}",
                                                ArrivalDateTime = pv.ArrivalDateTime,
-                                               CheckoutDateTime = DateTimeOffset.Now,
-                                           });
+                                               CheckoutDateTime = currentTime,
+                                               Price = _gh.GetPriceForParkedDuration(pv.ArrivalDateTime, currentTime)
+                                           });;
             return View(await vm.FirstAsync());
         }
         public async Task<IActionResult> Filter(string registrationNumber, int? vehicleType)
@@ -220,7 +231,7 @@ namespace Ovning12.Controllers
 
             TempData["FlashMessage"] = new Dictionary<string, string>
             {
-                { "msg", $"Vehicle {parkedVehicle.RegistrationNumber} checked out" },
+                { "msg", $"Vehicle {parkedVehicle?.RegistrationNumber} checked out" },
                 { "cssClass","alert-success"}
             };
 
