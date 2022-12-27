@@ -14,18 +14,22 @@ namespace Ovning12.Models
         public VehicleTypes VehicleType { get; set; }
 
         [Required]
+        [Display(Name = "Märke")]
         [StringLength(20, MinimumLength = 3)]
         public string Make { get; set; }
 
         [Required]
+        [Display(Name = "Färg")]
         [StringLength(10, MinimumLength = 3)]
         public string Color { get; set; }
 
         [Required]
+        [Display(Name = "Antal hjul")]
         [Range(0,4)]
         public int NumberOfWheels { get; set; }
 
         [Required]
+        [Display(Name = "Modellbeteckning")]
         [StringLength(20, MinimumLength = 3)]
         public string Model { get; set; }
 
@@ -33,7 +37,7 @@ namespace Ovning12.Models
         [StringLength(10, MinimumLength = 3)]
         [Display(Name = "Registeringsnummer")]
         public string RegistrationNumber { get; set; }
-
+        [Display(Name = "Checkades in")]
         public DateTimeOffset ArrivalDateTime { get; set; }
     }
 }
