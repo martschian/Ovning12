@@ -2,12 +2,12 @@
 @model Ovning12.Models.ParkedVehicle
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Checka in";
 }
 
-<h1>Create</h1>
+<h1>Checka in</h1>
 
-<h4>ParkedVehicle</h4>
+<h4>Fordon</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -50,14 +50,14 @@
                 <span asp-validation-for="ArrivalDateTime" class="text-danger"></span>
             </div>*@
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Checka in" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Tillbaka till översikten</a>
 </div>
 
 @section Scripts {
