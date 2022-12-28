@@ -1,14 +1,14 @@
 ﻿@model ParkedVehicle
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Checka ut";
 }
 
-<h1>Delete</h1>
+<h1>Checka ut</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Är du säker du vill checka ut?</h3>
 <div>
-    <h4>ParkedVehicle</h4>
+    <h4>Parkerat fordon</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -46,7 +46,7 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="ParkedVehicleId" />
         <input type="submit" value="Checka ut" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Tillbaka till översikten</a>
     </form>
 
     <a asp-action="Receipt" asp-route-id="@Model.ParkedVehicleId">Med kvitto</a>
