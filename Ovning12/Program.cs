@@ -9,6 +9,7 @@ builder.Services.AddDbContext<Ovning12Context>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.Services.AddScoped<IGarageHelpers, GarageHelpers>();
 
 var app = builder.Build();
@@ -25,6 +26,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.MapRazorPages();
 
 app.UseAuthorization();
 
